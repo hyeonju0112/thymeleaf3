@@ -20,40 +20,41 @@ import idu.cs.domain.User;
 public class QuestionEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id; 	
+	private Long id; 
+	// database에서 sequence number, auto increment => primary key 역할
+	
 	private String title;
 	
 	@ManyToOne
-	@JoinColumn (name="fk_question_writer")
-	private UserEntity witer;
+	@JoinColumn(name="fk_question_writer")
+	private UserEntity writer;
 	
 	@Lob
-	private String contentes;
+	private String contents;
 	private LocalDateTime createTime;
 	
-	public Question buildDomain(){ //Domain 생성
-		Question question = new Question
+	public Question buildDomain() { // Domain 생성
+		Question question = new Question();
 		question.setId(id);
 		question.setTitle(title);
-		question.setWriter(Writer.buildomain());
+		question.setWriter(writer.buildDomain());
 		question.setContents(contents);
 		question.setCreateTime(createTime);
 		return question;
 	}
+	
 	public void buildEntity(Question question) {
-		
 		id = question.getId();
 		title = question.getTitle();
 		
 		UserEntity entity = new UserEntity();
-		entity.buildEntity(question.getWtiter);		
+		entity.buildEntity(question.getWriter());
 		writer = entity;
 		
 		contents = question.getContents();
 		createTime = question.getCreateTime();
-		
-		
 	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -66,17 +67,17 @@ public class QuestionEntity {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public UserEntity getWiter() {
-		return witer;
+	public UserEntity getWriter() {
+		return writer;
 	}
-	public void setWiter(UserEntity witer) {
-		this.witer = witer;
+	public void setWriter(UserEntity writer) {
+		this.writer = writer;
 	}
-	public String getContentes() {
-		return contentes;
+	public String getContents() {
+		return contents;
 	}
-	public void setContentes(String contentes) {
-		this.contentes = contentes;
+	public void setContents(String contents) {
+		this.contents = contents;
 	}
 	public LocalDateTime getCreateTime() {
 		return createTime;
@@ -84,4 +85,5 @@ public class QuestionEntity {
 	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
+	
 }
